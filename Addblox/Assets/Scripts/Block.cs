@@ -38,8 +38,12 @@ public class Block : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("BottomBounds"))
+        if (collision.gameObject.CompareTag("BottomBounds") ||
+            collision.gameObject.CompareTag("Block"))
+        {
             isFalling = false;
+            BlockSpawner.instance.SpawnNewBlock();
+        }
     }
 
     void Move()
