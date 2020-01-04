@@ -3,7 +3,8 @@
 public class Block : MonoBehaviour
 {
     [SerializeField]
-    private float speed = 1f;
+    private float speed = 50f;
+    private float fasterSpeed;
     private bool isFalling = true;
     private float offset = 1f;
 
@@ -14,12 +15,14 @@ public class Block : MonoBehaviour
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+
+        fasterSpeed = speed * 5f;
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        rb.velocity = new Vector3(0, -speed * Time.deltaTime, 0);
+        rb.velocity = new Vector2(0, -speed * Time.deltaTime);
     }
 
     // Update is called once per frame
@@ -29,6 +32,8 @@ public class Block : MonoBehaviour
             Move();
         else
             rb.velocity = Vector3.zero;
+
+        FallFaster();
     }
 
     void OnCollisionEnter2D(Collision2D collision)
@@ -48,5 +53,14 @@ public class Block : MonoBehaviour
 
         float clampedX = Mathf.Clamp(newX, minX, maxX);
         rb.position = new Vector2(clampedX, rb.position.y);
+    }
+
+    void FallFaster()
+    {
+        if (Input.GetKey(KeyCode.DownArrow))
+            rb.velocity = new Vector2(0, -fasterSpeed * Time.deltaTime);
+
+        if (Input.GetKeyUp(KeyCode.DownArrow))
+            rb.velocity = new Vector2(0, -speed * Time.deltaTime);
     }
 }
