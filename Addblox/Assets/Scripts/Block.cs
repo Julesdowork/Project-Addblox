@@ -1,13 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Block : MonoBehaviour
 {
     [SerializeField]
     private float speed = 1f;
     private bool isFalling = true;
-    private float offset = 1.28f;
+    private float offset = 1f;
+
+    private float minX = -4f, maxX = 4f;
 
     private Rigidbody2D rb;
 
@@ -39,9 +39,14 @@ public class Block : MonoBehaviour
 
     void Move()
     {
+        float newX = rb.position.x;
+
         if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
-            rb.position += new Vector2(-offset, 0);
+            newX -= offset;
         else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
-            rb.position += new Vector2(offset, 0);
+            newX += offset;
+
+        float clampedX = Mathf.Clamp(newX, minX, maxX);
+        rb.position = new Vector2(clampedX, rb.position.y);
     }
 }
