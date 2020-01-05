@@ -9,10 +9,7 @@ public enum BlockColor
 
 public class BlockData : MonoBehaviour
 {
-    private BlockColor blockColor;
-    public BlockColor BlockColor { get; }
-
-    private int blockNumber;
+    public BlockColor BlockColor { get; set; }
     public int BlockNumber { get; set; }
 
     private SpriteRenderer spriteRenderer;
@@ -26,25 +23,18 @@ public class BlockData : MonoBehaviour
         GenerateRandomValues();
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     private void GenerateRandomValues()
     {
         int randColor = Random.Range(0, 6);
-        blockColor = (BlockColor)randColor;
-        spriteRenderer.sprite = GameplayController.instance.blockSprites[(int)blockColor];
+        BlockColor = (BlockColor)randColor;
+        spriteRenderer.sprite = GameplayController.instance.blockSprites[(int)BlockColor];
 
-        blockNumber = Random.Range(1, 10);
-        numberText.text = blockNumber.ToString();
+        BlockNumber = Random.Range(1, 10);
+        numberText.text = BlockNumber.ToString();
+    }
+
+    public void UpdateNumber()
+    {
+        numberText.text = BlockNumber.ToString();
     }
 }

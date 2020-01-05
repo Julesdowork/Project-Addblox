@@ -1,13 +1,20 @@
 ﻿using UnityEngine;
+using TMPro;
 
 public class GameplayController : MonoBehaviour
 {
     public static GameplayController instance;
 
+    public float globalSpeed = 1f;
+
     public Sprite[] blockSprites = new Sprite[6];
+
+    private int score;
 
     [SerializeField]
     private GameObject gameOverPanel;
+    [SerializeField]
+    private TextMeshProUGUI scoreText;
 
     private void Awake()
     {
@@ -20,18 +27,18 @@ public class GameplayController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        scoreText.text = score.ToString();
     }
 
     public void GameOver()
     {
         Time.timeScale = 0;
         gameOverPanel.SetActive(true);
+    }
+
+    public void AddToScore(int points)
+    {
+        score += points;
+        scoreText.text = score.ToString();
     }
 }

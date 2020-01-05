@@ -3,16 +3,23 @@
 public class BlockMovement : MonoBehaviour
 {
     private enum State { FALLING, RESTING };
-
-    [SerializeField]
-    private float speed = 50f;
     private State currentState = State.FALLING;
-    private float offset = 1f;
 
+    private float speed;
+    private float offset = 1f;
     private float minX = -4f, maxX = 4f, maxY = 8f;
+
     [SerializeField]
     private LayerMask blockLayer;
     private Vector3 rayOffset = new Vector3(0.5f, 0, 0);
+
+    private BlockData data;
+
+    void Awake()
+    {
+        data = GetComponent<BlockData>();
+        speed = GameplayController.instance.globalSpeed;
+    }
 
     // Update is called once per frame
     void Update()
@@ -31,6 +38,10 @@ public class BlockMovement : MonoBehaviour
             (collision.gameObject.CompareTag("Block") && currentState == State.FALLING))
         {
             currentState = State.RESTING;
+
+            if (collision.gameObject.CompareTag("Block"))
+                HandleBlockCollision(collision.gameObject);
+
             if (transform.position.y < maxY)
                 BlockSpawner.instance.SpawnNewBlock();
             else
@@ -76,5 +87,33 @@ public class BlockMovement : MonoBehaviour
         }
 
         return 0;
+    }
+
+    private void HandleBlockCollision(GameObject otherBlock)
+    {
+        BlockData otherBlockData = otherBlock.GetComponent<BlockData>();
+        int sum = data.BlockNumber + otherBlockData.BlockNumber;
+        bool colorsMatch = BlockColorsMatch(data, otherBlockData);
+
+
+        if (sum == 10)
+        {
+            Destroy(otherBlock);
+            Destroy(gameObject);
+            GameplayController.instance.AddToScore(10);
+        }
+        else if (colorsMatch)
+        {
+            int tempVal = sum % 10;
+            otherBlockData.BlockNumber = tempVal;
+            otherBlockData.UpdateNumber();
+            Destroy(gameObject);
+            GameplayController.instance.AddToScore(10);
+        }
+    }
+
+    private bool BlockColorsMatch(BlockData block1, BlockData block2)
+    {
+        return block1.BlockColor == block2.BlockColor;
     }
 }
