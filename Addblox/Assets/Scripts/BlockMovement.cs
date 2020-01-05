@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class Block : MonoBehaviour
+public class BlockMovement : MonoBehaviour
 {
     private enum State { FALLING, RESTING };
 
@@ -9,7 +9,7 @@ public class Block : MonoBehaviour
     private State currentState = State.FALLING;
     private float offset = 1f;
 
-    private float minX = -4f, maxX = 4f;
+    private float minX = -4f, maxX = 4f, maxY = 8f;
     [SerializeField]
     private LayerMask blockLayer;
     private Vector3 rayOffset = new Vector3(0.5f, 0, 0);
@@ -31,7 +31,10 @@ public class Block : MonoBehaviour
             (collision.gameObject.CompareTag("Block") && currentState == State.FALLING))
         {
             currentState = State.RESTING;
-            BlockSpawner.instance.SpawnNewBlock();
+            if (transform.position.y < maxY)
+                BlockSpawner.instance.SpawnNewBlock();
+            else
+                GameplayController.instance.GameOver();
         }
     }
 
