@@ -58,11 +58,20 @@ public class BlockMovement : MonoBehaviour
     private void Move()
     {
         float newX = transform.position.x;
+        RaycastHit2D hit;
 
         if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            hit = Physics2D.Raycast(transform.position, Vector2.left, 1.5f, blockLayer);
+            if (hit) { return; }
             newX -= offset;
+        }
         else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            hit = Physics2D.Raycast(transform.position, Vector2.right, 1.5f, blockLayer);
+            if (hit) { return; }
             newX += offset;
+        }
 
         float clampedX = Mathf.Clamp(newX, minX, maxX);
         transform.position = new Vector3(clampedX, transform.position.y, 0);

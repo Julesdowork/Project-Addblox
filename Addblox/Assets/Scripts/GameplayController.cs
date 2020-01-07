@@ -10,6 +10,7 @@ public class GameplayController : MonoBehaviour
     public Sprite[] blockSprites = new Sprite[6];
 
     private int score;
+    private int multiplier;
 
     [SerializeField]
     private GameObject gameOverPanel;
@@ -38,7 +39,14 @@ public class GameplayController : MonoBehaviour
 
     public void AddToScore(int points)
     {
-        score += points;
+        score += points * multiplier;
         scoreText.text = score.ToString();
+    }
+
+    public void AddToMultiplier()
+    {
+        multiplier++;
+        if (multiplier >= 9)
+            multiplier = 9;
     }
 }
