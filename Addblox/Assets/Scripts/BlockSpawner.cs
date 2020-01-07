@@ -28,12 +28,6 @@ public class BlockSpawner : MonoBehaviour
         SpawnNewBlock();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     private void SpawnBlock()
     {
         GameObject block = Instantiate(blockPrefab, transform.position, Quaternion.identity);

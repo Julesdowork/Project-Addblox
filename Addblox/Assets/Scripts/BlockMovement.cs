@@ -7,7 +7,7 @@ public class BlockMovement : MonoBehaviour
 
     private float speed;
     private float offset = 1f;
-    private float minX = -4f, maxX = 4f, maxY = 8f;
+    private float minX = -2f, maxX = 2f, maxY = 4.5f;
 
     [SerializeField]
     private LayerMask blockLayer;
@@ -51,7 +51,7 @@ public class BlockMovement : MonoBehaviour
 
     private void Fall()
     {
-        //Debug.DrawRay(transform.localPosition + rayOffset, Vector2.down * 8f, Color.red);
+        Debug.DrawRay(transform.localPosition + rayOffset, Vector2.down * 8f, Color.red);
         transform.Translate(-transform.up * speed * Time.deltaTime);
     }
 
