@@ -34,12 +34,13 @@ public class BlockMovement : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("BottomBounds") ||
-            (collision.gameObject.CompareTag("Block") && currentState == State.FALLING))
+        if (currentState == State.FALLING)
         {
             currentState = State.RESTING;
 
-            if (collision.gameObject.CompareTag("Block"))
+            if (collision.gameObject.CompareTag("BottomBounds"))
+                GameplayController.instance.ResetMultiplier();
+            else if (collision.gameObject.CompareTag("Block"))
                 HandleBlockCollision(collision.gameObject);
 
             if (transform.position.y < maxY)
@@ -105,11 +106,19 @@ public class BlockMovement : MonoBehaviour
         bool colorsMatch = BlockColorsMatch(data, otherBlockData);
 
 
-        if (sum == 10)
+        if (sum == 10 && colorsMatch)
+        {
+            Destroy(otherBlock);
+            Destroy(gameObject);
+            GameplayController.instance.AddToScore(70);
+            GameplayController.instance.AddToMultiplier();
+        }
+        else if (sum == 10)
         {
             Destroy(otherBlock);
             Destroy(gameObject);
             GameplayController.instance.AddToScore(10);
+            GameplayController.instance.AddToMultiplier();
         }
         else if (colorsMatch)
         {
@@ -117,7 +126,10 @@ public class BlockMovement : MonoBehaviour
             otherBlockData.BlockNumber = tempVal;
             otherBlockData.UpdateNumber();
             Destroy(gameObject);
-            GameplayController.instance.AddToScore(10);
+        }
+        else
+        {
+            GameplayController.instance.ResetMultiplier();
         }
     }
 

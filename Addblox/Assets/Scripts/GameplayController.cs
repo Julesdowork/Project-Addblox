@@ -10,12 +10,14 @@ public class GameplayController : MonoBehaviour
     public Sprite[] blockSprites = new Sprite[6];
 
     private int score;
-    private int multiplier;
+    private int multiplier = 1;
 
     [SerializeField]
     private GameObject gameOverPanel;
     [SerializeField]
     private TextMeshProUGUI scoreText;
+    [SerializeField]
+    private TextMeshProUGUI multText;
 
     private void Awake()
     {
@@ -48,5 +50,12 @@ public class GameplayController : MonoBehaviour
         multiplier++;
         if (multiplier >= 9)
             multiplier = 9;
+        multText.text = "X" + multiplier;
+    }
+
+    public void ResetMultiplier()
+    {
+        multiplier = 1;
+        multText.text = "X" + multiplier;
     }
 }
