@@ -2,8 +2,8 @@
 
 public class BlockMovement : MonoBehaviour
 {
-    private enum State { FALLING, RESTING };
-    private State currentState = State.FALLING;
+    public enum State { FALLING, RESTING, ON_HOLD, IN_QUEUE };
+    public State currentState = State.IN_QUEUE;
 
     private float speed;
     private float offset = 1f;
@@ -52,7 +52,7 @@ public class BlockMovement : MonoBehaviour
 
     private void Fall()
     {
-        Debug.DrawRay(transform.localPosition + rayOffset, Vector2.down * 8f, Color.red);
+        //Debug.DrawRay(transform.localPosition + rayOffset, Vector2.down * 8f, Color.red);
         transform.Translate(-transform.up * speed * Time.deltaTime);
     }
 

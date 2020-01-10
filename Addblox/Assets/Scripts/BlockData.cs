@@ -30,7 +30,7 @@ public class BlockData : MonoBehaviour
         spriteRenderer.sprite = GameplayController.instance.blockSprites[(int)BlockColor];
 
         BlockNumber = Random.Range(1, 10);
-        numberText.text = BlockNumber.ToString();
+        UpdateNumber();
     }
 
     public void UpdateNumber()
