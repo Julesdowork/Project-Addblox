@@ -6,6 +6,7 @@ public class Timer : MonoBehaviour
     private int totalTime;
     private int seconds;
     private int minutes;
+    public int Minutes { get; }
     private string time;
     private TextMeshProUGUI timeText;
 

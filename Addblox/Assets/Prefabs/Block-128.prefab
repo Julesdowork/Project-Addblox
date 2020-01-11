@@ -145,9 +145,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a61912941a9aa6d46953721d8ffca81c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentState: 3
   blockLayer:
     serializedVersion: 2
     m_Bits: 256
+  differentFX: {fileID: 9163343540795331806, guid: 6ccdf7d17ccd70e498361e82d4ca4f5f,
+    type: 3}
+  sameFX: {fileID: 5189767077600799481, guid: 0adf5663f832c0544895c1fb140edee4, type: 3}
 --- !u!114 &964941409123590881
 MonoBehaviour:
   m_ObjectHideFlags: 0

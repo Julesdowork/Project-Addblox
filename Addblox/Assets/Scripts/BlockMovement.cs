@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class BlockMovement : MonoBehaviour
 {
@@ -12,6 +13,10 @@ public class BlockMovement : MonoBehaviour
     [SerializeField]
     private LayerMask blockLayer;
     private Vector3 rayOffset = new Vector3(0.5f, 0, 0);
+    [SerializeField]
+    private ParticleSystem differentFX;
+    [SerializeField]
+    private ParticleSystem sameFX;
 
     private BlockData data;
 
@@ -63,7 +68,7 @@ public class BlockMovement : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            hit = Physics2D.Raycast(transform.position, Vector2.left, 1.5f, blockLayer);
+            hit = Physics2D.Raycast(transform.position, Vector2.left, 0.5f, blockLayer);
             if (hit) { return; }
             newX -= offset;
         }
@@ -80,7 +85,7 @@ public class BlockMovement : MonoBehaviour
 
     private void Drop()
     {
-        if (Input.GetKeyDown(KeyCode.DownArrow))
+        if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
         {
             float yPos = FindNextAvailableYPosition();
             transform.position = new Vector3(transform.position.x, yPos, 0);
@@ -108,6 +113,7 @@ public class BlockMovement : MonoBehaviour
 
         if (sum == 10 && colorsMatch)
         {
+            StartCoroutine(ActivateEffect(sameFX));
             Destroy(otherBlock);
             Destroy(gameObject);
             GameplayController.instance.AddToScore(70);
@@ -115,6 +121,7 @@ public class BlockMovement : MonoBehaviour
         }
         else if (sum == 10)
         {
+            StartCoroutine(ActivateEffect(differentFX));
             Destroy(otherBlock);
             Destroy(gameObject);
             GameplayController.instance.AddToScore(10);
@@ -136,5 +143,16 @@ public class BlockMovement : MonoBehaviour
     private bool BlockColorsMatch(BlockData block1, BlockData block2)
     {
         return block1.BlockColor == block2.BlockColor;
+    }
+
+    private IEnumerator ActivateEffect(ParticleSystem ps)
+    {
+        ps.gameObject.SetActive(true);
+        ps.transform.position = transform.position;
+        ps.Play();
+
+        yield return new WaitForSeconds(2f);
+
+        ps.gameObject.SetActive(false);
     }
 }

@@ -6,6 +6,7 @@ public class GameplayController : MonoBehaviour
     public static GameplayController instance;
 
     public float globalSpeed = 1f;
+    public int level = 1;
 
     public Sprite[] blockSprites = new Sprite[6];
 
@@ -18,6 +19,8 @@ public class GameplayController : MonoBehaviour
     private TextMeshProUGUI scoreText;
     [SerializeField]
     private TextMeshProUGUI multText;
+    [SerializeField]
+    private TextMeshProUGUI levelText;
 
     private void Awake()
     {
@@ -31,6 +34,8 @@ public class GameplayController : MonoBehaviour
     void Start()
     {
         scoreText.text = score.ToString();
+
+        InvokeRepeating("AdvanceLevel", 60f, 60f);
     }
 
     public void GameOver()
@@ -57,5 +62,16 @@ public class GameplayController : MonoBehaviour
     {
         multiplier = 1;
         multText.text = "X" + multiplier;
+    }
+
+    private void AdvanceLevel()
+    {
+        level++;
+        levelText.text = level.ToString();
+
+        globalSpeed += 0.3f;
+
+        if (level >= 10)
+            CancelInvoke("AdvanceLevel");
     }
 }
