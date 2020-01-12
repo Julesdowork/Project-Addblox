@@ -23,7 +23,7 @@ public class Timer : MonoBehaviour
 
     void CountUpTime()
     {
-        totalTime = (int)Time.time;
+        totalTime = (int)Time.timeSinceLevelLoad;
         minutes = totalTime / 60;
         seconds = totalTime % 60;
         time = minutes.ToString("D2") + ":" + seconds.ToString("D2");

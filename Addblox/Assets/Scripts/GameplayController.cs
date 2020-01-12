@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using TMPro;
 
 public class GameplayController : MonoBehaviour
@@ -21,6 +22,8 @@ public class GameplayController : MonoBehaviour
     private TextMeshProUGUI multText;
     [SerializeField]
     private TextMeshProUGUI levelText;
+    [SerializeField]
+    private TextMeshProUGUI highScoreText;
 
     private void Awake()
     {
@@ -34,6 +37,7 @@ public class GameplayController : MonoBehaviour
     void Start()
     {
         scoreText.text = score.ToString();
+        highScoreText.text = GameManager.instance.highScore.ToString();
 
         InvokeRepeating("AdvanceLevel", 60f, 60f);
     }
@@ -42,6 +46,13 @@ public class GameplayController : MonoBehaviour
     {
         Time.timeScale = 0;
         gameOverPanel.SetActive(true);
+
+        if (score > GameManager.instance.highScore)
+            GameManager.instance.highScore = score;
+        if (level > GameManager.instance.highLevel)
+            GameManager.instance.highLevel = level;
+
+        GameManager.instance.SaveGameData();
     }
 
     public void AddToScore(int points)
@@ -73,5 +84,11 @@ public class GameplayController : MonoBehaviour
 
         if (level >= 10)
             CancelInvoke("AdvanceLevel");
+    }
+
+    public void RestartGame()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("Gameplay 1");
     }
 }
