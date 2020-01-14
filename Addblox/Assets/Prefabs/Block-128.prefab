@@ -149,9 +149,9 @@ MonoBehaviour:
   blockLayer:
     serializedVersion: 2
     m_Bits: 256
-  differentFX: {fileID: 9163343540795331806, guid: 6ccdf7d17ccd70e498361e82d4ca4f5f,
+  differentFX: {fileID: 9163343540795331804, guid: 6ccdf7d17ccd70e498361e82d4ca4f5f,
     type: 3}
-  sameFX: {fileID: 5189767077600799481, guid: 0adf5663f832c0544895c1fb140edee4, type: 3}
+  sameFX: {fileID: 5189767077600799483, guid: 0adf5663f832c0544895c1fb140edee4, type: 3}
 --- !u!114 &964941409123590881
 MonoBehaviour:
   m_ObjectHideFlags: 0

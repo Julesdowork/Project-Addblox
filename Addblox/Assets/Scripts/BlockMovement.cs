@@ -13,10 +13,12 @@ public class BlockMovement : MonoBehaviour
     [SerializeField]
     private LayerMask blockLayer;
     private Vector3 rayOffset = new Vector3(0.5f, 0, 0);
+
     [SerializeField]
-    private ParticleSystem differentFX;
+    private GameObject differentFX;
     [SerializeField]
-    private ParticleSystem sameFX;
+    private GameObject sameFX;
+    private Vector3 effectOffset = new Vector3(0.5f, 0.5f, 0);
 
     private BlockData data;
 
@@ -113,7 +115,7 @@ public class BlockMovement : MonoBehaviour
 
         if (sum == 10 && colorsMatch)
         {
-            StartCoroutine(ActivateEffect(sameFX));
+            ActivateEffect(sameFX, gameObject, otherBlock);
             Destroy(otherBlock);
             Destroy(gameObject);
             GameplayController.instance.AddToScore(70);
@@ -121,7 +123,7 @@ public class BlockMovement : MonoBehaviour
         }
         else if (sum == 10)
         {
-            StartCoroutine(ActivateEffect(differentFX));
+            ActivateEffect(differentFX, gameObject, otherBlock);
             Destroy(otherBlock);
             Destroy(gameObject);
             GameplayController.instance.AddToScore(10);
@@ -145,14 +147,12 @@ public class BlockMovement : MonoBehaviour
         return block1.BlockColor == block2.BlockColor;
     }
 
-    private IEnumerator ActivateEffect(ParticleSystem ps)
+    private void ActivateEffect(GameObject effect, GameObject thisBlock,
+        GameObject otherBlock)
     {
-        ps.gameObject.SetActive(true);
-        ps.transform.position = transform.position;
-        ps.Play();
-
-        yield return new WaitForSeconds(2f);
-
-        ps.gameObject.SetActive(false);
+        Instantiate(effect, thisBlock.transform.position + effectOffset,
+            effect.transform.rotation);
+        Instantiate(effect, otherBlock.transform.position + effectOffset,
+            effect.transform.rotation);
     }
 }
