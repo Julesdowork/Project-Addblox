@@ -46,7 +46,10 @@ public class BlockMovement : MonoBehaviour
             currentState = State.RESTING;
 
             if (collision.gameObject.CompareTag("BottomBounds"))
+            {
                 GameplayController.instance.ResetMultiplier();
+                SoundManager.instance.PlayImpactSound();
+            }
             else if (collision.gameObject.CompareTag("Block"))
                 HandleBlockCollision(collision.gameObject);
 
@@ -120,6 +123,7 @@ public class BlockMovement : MonoBehaviour
             Destroy(gameObject);
             GameplayController.instance.AddToScore(70);
             GameplayController.instance.AddToMultiplier();
+            SoundManager.instance.PlayMergeSound(true);
         }
         else if (sum == 10)
         {
@@ -128,6 +132,7 @@ public class BlockMovement : MonoBehaviour
             Destroy(gameObject);
             GameplayController.instance.AddToScore(10);
             GameplayController.instance.AddToMultiplier();
+            SoundManager.instance.PlayMergeSound(false);
         }
         else if (colorsMatch)
         {
@@ -135,10 +140,12 @@ public class BlockMovement : MonoBehaviour
             otherBlockData.BlockNumber = tempVal;
             otherBlockData.UpdateNumber();
             Destroy(gameObject);
+            SoundManager.instance.PlayAddBlocksSound();
         }
         else
         {
             GameplayController.instance.ResetMultiplier();
+            SoundManager.instance.PlayImpactSound();
         }
     }
 
